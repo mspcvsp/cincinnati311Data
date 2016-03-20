@@ -1,5 +1,5 @@
 #!/usr/local/bin/python2.7
-""" Emits the number of Cincinnati 311 records / month
+""" Counts the number of occurrences for each unique key
 
 http://www.michael-noll.com/tutorials/
     writing-an-hadoop-mapreduce-program-in-python/"""
@@ -8,7 +8,7 @@ import sys
 
 
 class Reducer(object):
-    """ Emits the number of Cincinnati 311 records / month"""
+    """ Counts the number of occurrences for each unique key"""
 
     def __init__(self):
         """Reducer class constructor
@@ -23,7 +23,7 @@ class Reducer(object):
 
     def reduce(self,
                stdin):
-        """Counts the number of Cincinnati 311 records / month
+        """Counts the number of occurrences for each unique key
 
         Args:
             self: Reducer class handle
@@ -48,7 +48,7 @@ class Reducer(object):
             self.emit_key_count()
 
     def emit_key_count(self):
-        """Emits the number of Cincinnati 311 records / month
+        """Counts the number of occurrences for each unique key
 
         Args:
             self: Reducer class handle
@@ -59,7 +59,7 @@ class Reducer(object):
 
 
 def reducer(stdin):
-    """Counts the number of Cincinnati 311 records / month
+    """Counts the number of occurrences for each unique key
 
     Args:
         stdin: Standard input file handle
