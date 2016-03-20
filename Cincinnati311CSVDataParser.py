@@ -53,8 +53,16 @@ class Cincinnati311CSVDataParser(object):
 
         self.readerobj = DictReader(h_file, fieldnames)
 
-    def parse(self):
+    def __iter__(self):
+        """ Iterator
+        :return: None
+        """
+        return self
+
+    def next(self):
         """ Parses a Cincinnati 311 CSV file record
+
+        http://stackoverflow.com/questions/19151/how-to-make-class-iterable
 
         Args:
             self: Cincinnati311CSVDataParser class object handle
@@ -69,7 +77,8 @@ class Cincinnati311CSVDataParser(object):
         else:
 
             for key in self.date_fields:
-                record[key] = parser.parse(record[key])
+                if len(record[key]) > 0:
+                    record[key] = parser.parse(record[key])
 
             for key in self.string_fields:
                 record[key] = re.sub("\"", "", record[key].lower())
