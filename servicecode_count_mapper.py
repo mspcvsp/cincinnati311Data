@@ -2,7 +2,7 @@
 """ Parses a set of Cincinnati 311 records and emits the following
 (key, value) pair:
 
-<servicecode>_<servicename> 1
+<servicecode> | <servicename> 1
 
 http://www.michael-noll.com/tutorials/
     writing-an-hadoop-mapreduce-program-in-python/"""
