@@ -15,7 +15,7 @@ def mapper(stdin):
     """Parses a set of Cincinnati 311 records and emits the following
     (key, value) pair:
 
-    <servicecode>_<servicename> 1
+    <servicecode> | <servicename> 1
 
     Args:
         stdin: Standard input file handle
