@@ -30,10 +30,13 @@ def mapper(stdin):
     for record in parserobj:
 
         if record is not None:
+            service_category = mapobj.lookup_service_category(record)
 
-            print "%d-%d-01\t%s" % (record['requesteddatetime'].year,
-                                    record['requesteddatetime'].month,
-                                    mapobj.lookup_service_category(record))
+            if service_category is not "unknown":
+                print "%d-%d-01\t%s" %\
+                        (record['requesteddatetime'].year,
+                         record['requesteddatetime'].month,
+                         mapobj.lookup_service_category(record))
 
 if __name__ == "__main__":
     mapper(sys.stdin)

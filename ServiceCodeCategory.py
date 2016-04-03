@@ -546,7 +546,6 @@ class ServiceCodeCategory(object):
         if self.code_category_map.has_key(key):
             category = self.code_category_map[key]
         else:
-            print "*** UNK *** %s" % (key)
             category = 'unknown'
 
         return category
