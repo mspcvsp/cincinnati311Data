@@ -1,6 +1,7 @@
 from csv import DictReader
 from dateutil import parser
 import re
+import string
 
 class Cincinnati311CSVDataParser(object):
     """ Class that parses and cleans a Cincinnati 311 Comma Seperated Value
@@ -51,6 +52,10 @@ class Cincinnati311CSVDataParser(object):
         self.string_fields = filter(lambda elem: matchobj.match(elem) == None,
                                     fieldnames)
 
+        # http://stackoverflow.com/questions/265960/
+        #   best-way-to-strip-punctuation-from-a-string-in-python
+        self.punctuation_table = table = string.maketrans("", "")
+
         self.readerobj = DictReader(h_file, fieldnames)
 
     def __iter__(self):
@@ -75,12 +80,23 @@ class Cincinnati311CSVDataParser(object):
         if record['jurisdictionid'] == 'JURISDICTION_ID':
             record = None
         else:
-
             for key in self.date_fields:
                 if len(record[key]) > 0:
                     record[key] = parser.parse(record[key])
 
             for key in self.string_fields:
                 record[key] = re.sub("\"", "", record[key].lower())
+
+            if len(record['servicecode']) > 0:
+                record['servicecode'] =\
+                    re.sub("\s+", "", record['servicecode'])
+
+                record['servicecode'] =\
+                    record['servicecode'].translate(self.punctuation_table,
+                                                    string.punctuation)
+
+                record['servicename'] =\
+                    record['servicename'].translate(self.punctuation_table,
+                                                    string.punctuation)
 
         return record
