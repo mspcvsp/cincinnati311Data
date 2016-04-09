@@ -9,12 +9,14 @@ output: html_document
 library("lubridate")
 library("ggplot2")
 library("scales")
+library("reshape")
+library("RColorBrewer")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Monthly Occurrences of Cincinnati 311 Incidents
 
-```{r loadData}
+```{r analyizeMonthlyCount}
 monthlyCount <- read.table("../../VMShare/monthly_count.tsv",
                            sep="\t",
                            stringsAsFactors=FALSE)
@@ -44,4 +46,32 @@ ggplot(monthlyCount,aes(x=month,y=totalcount)) +
     xlab("Month") +
     ggtitle("City of Cincinnati 311 Open Data") +
     ggsave("./monthlyCounts.png", width=4, height=2.5, dpi=600)
+```
+
+## Monthly Occurrences of Cincinnati 311 Service Request Categories
+- [Melt function](http://www.r-bloggers.com/melt/)  
+- [Rotating x-axis labels](http://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2)  
+- [Expanding ggplot2 color palette](http://novyden.blogspot.com/2013/09/how-to-expand-color-palette-with-ggplot.html)  
+```{r analyzeServiceCategoryStats, fig.height=6, fig.width=10}
+serviceCategories <- read.csv("../../VMShare/categoryCount.csv",
+                              stringsAsFactors=FALSE)
+
+serviceCategories$date <- sub(" 00:00:00", "", serviceCategories$date)
+
+serviceCategories$date <- ymd(serviceCategories$date)
+
+serviceCategories <- melt(serviceCategories,id.vars=c("date"))
+
+colnames(serviceCategories) <- c("date","servicecategory","count")
+
+number_categories <- length(levels(serviceCategories$servicecategory))
+
+getPalette <- colorRampPalette(brewer.pal(8, "Dark2"))
+
+ggplot(serviceCategories, aes(x=date,y=count)) + 
+    geom_point(aes(colour=servicecategory)) +
+    facet_wrap(~servicecategory, ncol=4) + 
+    theme(axis.text.x=element_text(angle = 90)) +
+    scale_color_manual(values=getPalette(number_categories)) +
+    ggtitle("City of Cincinnati 311 Service Request Category Statistics")
 ```
