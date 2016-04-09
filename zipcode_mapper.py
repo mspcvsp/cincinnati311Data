@@ -27,7 +27,9 @@ def mapper(stdin):
     for record in parserobj:
 
         if record is not None:
-            print "%d\t1" % (record['zipcode'])
+
+            if record['zipcode'] is not None:
+                print "%d\t1" % (record['zipcode'])
 
 if __name__ == "__main__":
     mapper(sys.stdin)

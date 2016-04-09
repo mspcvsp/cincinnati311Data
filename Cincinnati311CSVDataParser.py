@@ -87,10 +87,16 @@ class Cincinnati311CSVDataParser(object):
             for key in self.string_fields:
                 record[key] = re.sub("\"", "", record[key].lower())
 
-            record['zipcode'] = int(record['zipcode'])
+            try:
+                record['zipcode'] = int(record['zipcode'])
+            except ValueError:
+                record['zipcode'] = None
 
             for key in ['latitude', 'longitude']:
-                record[key] = float(record[key])
+                try:
+                    record[key] = float(record[key])
+                except ValueError:
+                    record[key] = None
 
             if len(record['servicecode']) > 0:
                 record['servicecode'] =\
